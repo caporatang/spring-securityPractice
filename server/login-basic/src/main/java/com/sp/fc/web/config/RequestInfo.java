@@ -26,4 +26,5 @@ public class RequestInfo {
     private String remoteIp;
     private String sessionId;
     private LocalDateTime loginTime;
+
 }
