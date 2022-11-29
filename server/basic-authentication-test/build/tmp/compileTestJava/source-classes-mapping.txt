@@ -1,0 +1,2 @@
+com/sp/fc/web/BasicAuthenticationTest.java
+ com.sp.fc.web.BasicAuthenticationTest

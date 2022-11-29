@@ -1,0 +1,6 @@
+com/sp/fc/web/BasicAuthentionTestApplication.java
+ com.sp.fc.web.BasicAuthentionTestApplication
+controller/HomeController.java
+ controller.HomeController
+config/SecurityConfig.java
+ config.SecurityConfig
