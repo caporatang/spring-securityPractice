@@ -1,28 +1,12 @@
 com/sp/fc/web/CustomLoginApp.java
  com.sp.fc.web.CustomLoginApp
-com/sp/fc/web/student/StudentAuthenticationToken.java
- com.sp.fc.web.student.StudentAuthenticationToken
- com.sp.fc.web.student.StudentAuthenticationToken$StudentAuthenticationTokenBuilder
-com/sp/fc/web/controller/TeacherController.java
- com.sp.fc.web.controller.TeacherController
-com/sp/fc/web/controller/StudentController.java
- com.sp.fc.web.controller.StudentController
-com/sp/fc/web/teacher/Teacher.java
- com.sp.fc.web.teacher.Teacher
- com.sp.fc.web.teacher.Teacher$TeacherBuilder
-com/sp/fc/web/student/Student.java
- com.sp.fc.web.student.Student
- com.sp.fc.web.student.Student$StudentBuilder
-com/sp/fc/web/controller/HomeController.java
- com.sp.fc.web.controller.HomeController
-com/sp/fc/web/teacher/TeacherManager.java
- com.sp.fc.web.teacher.TeacherManager
-com/sp/fc/web/teacher/TeacherAuthenticationToken.java
- com.sp.fc.web.teacher.TeacherAuthenticationToken
- com.sp.fc.web.teacher.TeacherAuthenticationToken$TeacherAuthenticationTokenBuilder
-com/sp/fc/web/student/StudentManager.java
- com.sp.fc.web.student.StudentManager
-com/sp/fc/web/config/CustomLoginFilter.java
- com.sp.fc.web.config.CustomLoginFilter
 com/sp/fc/web/config/SecurityConfig.java
  com.sp.fc.web.config.SecurityConfig
+com/sp/fc/web/controller/StudentController.java
+ com.sp.fc.web.controller.StudentController
+com/sp/fc/web/config/CustomLoginFilter.java
+ com.sp.fc.web.config.CustomLoginFilter
+com/sp/fc/web/controller/HomeController.java
+ com.sp.fc.web.controller.HomeController
+com/sp/fc/web/controller/TeacherController.java
+ com.sp.fc.web.controller.TeacherController
