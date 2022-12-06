@@ -1,0 +1,4 @@
+com/sp/fc/web/UserDetailsTestApplication.java
+ com.sp.fc.web.UserDetailsTestApplication
+com/sp/fc/web/config/SecurityConfig.java
+ com.sp.fc.web.config.SecurityConfig

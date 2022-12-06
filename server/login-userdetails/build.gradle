@@ -1,0 +1,18 @@
+
+apply from: "../web-common.gradle"
+
+dependencies {
+    implementation("$boot:spring-boot-starter-data-jpa")
+
+    runtime("com.h2database:h2")
+
+    compile project(":web-user-admin")
+    compile project(":comp-user-admin")
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '7.0'
+}
+tasks.register("prepareKotlinBuildScriptModel"){}
+
