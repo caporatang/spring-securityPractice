@@ -14,12 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.security.web.authentication.rememberme.*;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.servlet.http.HttpSessionEvent;
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 
 @EnableWebSecurity(debug = true)
@@ -30,9 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final SpUserService spUserService;
+    private final DataSource dataSource;
 
-    public SecurityConfig(SpUserService spUserService) {
+    public SecurityConfig(SpUserService spUserService, DataSource dataSource) {
         this.spUserService = spUserService;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -74,6 +75,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
         });
     }
+    @Bean
+    PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
+        repository.setDataSource(dataSource);
+
+        try {
+            repository.removeUserTokens("1");
+        } catch (Exception e) {
+            repository.setCreateTableOnStartup(true);
+        }
+        return repository;
+    }
+
+
+
+    @Bean
+    PersistentTokenBasedRememberMeServices rememberMeServices() {
+        PersistentTokenBasedRememberMeServices service =
+                new PersistentTokenBasedRememberMeServices("hello",
+                        spUserService,
+                        tokenRepository()
+                        );
+        return service;
+    }
+
 
 
     @Override
@@ -95,7 +121,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling(error->
                         error.accessDeniedPage("/access-denied")
                 )
-                .rememberMe()
+                .rememberMe(r -> r
+                        .rememberMeServices(rememberMeServices()))
                 ;
     }
 
