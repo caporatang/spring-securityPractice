@@ -1,0 +1,15 @@
+
+apply from: "../web-common.gradle"
+
+dependencies {
+
+    implementation("$boot:spring-boot-starter-data-jpa")
+
+    runtime("com.h2database:h2")
+    implementation("$boot:spring-boot-starter-thymeleaf")
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+    compile project(":comp-user-admin")
+    compile project(":web-user-admin")
+}
+
+
