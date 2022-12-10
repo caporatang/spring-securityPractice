@@ -27,7 +27,7 @@ public class SpUser implements UserDetails {
 
     private String email;
 
-    private String password;
+    private String password;  
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name="user_id"))
