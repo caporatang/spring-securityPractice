@@ -1,0 +1,4 @@
+ieyJhbGciOiJIUzI1NiJ9.eyJwcmljZSI6MzAwMCwibmFtZSI6InRhZWlsIn0.gn1-9HyQhbo9yu_p5UZs8wvPjsG-v9pJoS5AAOoBU_g
+header : {"alg":"HS256"}
+%body : {"price":3000,"name":"taeil"}
+gheader={alg=HS256},body={price=3000, name=taeil},signature=gn1-9HyQhbo9yu_p5UZs8wvPjsG-v9pJoS5AAOoBU_g
