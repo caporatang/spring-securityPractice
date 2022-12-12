@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sp.fc.web.JWTSimpleTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-12T01:18:22" hostname="MacBook-Pro.local" time="0.349">
+  <properties/>
+  <testcase name="1. jjwt 를 이용한 토큰 테스트" classname="com.sp.fc.web.JWTSimpleTest" time="0.349"/>
+  <system-out><![CDATA[eyJhbGciOiJIUzI1NiJ9.eyJwcmljZSI6MzAwMCwibmFtZSI6InRhZWlsIn0.gn1-9HyQhbo9yu_p5UZs8wvPjsG-v9pJoS5AAOoBU_g
+header : {"alg":"HS256"}
+body : {"price":3000,"name":"taeil"}
+header={alg=HS256},body={price=3000, name=taeil},signature=gn1-9HyQhbo9yu_p5UZs8wvPjsG-v9pJoS5AAOoBU_g
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
