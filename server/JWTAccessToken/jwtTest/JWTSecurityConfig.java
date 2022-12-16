@@ -62,7 +62,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager());
+        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(), memberService);
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(), memberService);
 
         // 토큰을 사용하려면,

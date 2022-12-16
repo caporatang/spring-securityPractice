@@ -29,7 +29,9 @@ public class JWTUtil {
     private static final Algorithm ALGORITHM = Algorithm.HMAC256("TradingDay");
 
     //인증토큰의 유효시간은 20분
-    private static final long AUTH_TIME = 10 * 60;
+    //private static final long AUTH_TIME = 10 * 60;
+    //testOnly == 인증토큰의 시간을 2초로
+    private static final long AUTH_TIME = 2;
 
     //리프레시 토큰은 일주일
     private static final long REFRESH_TIME = 60 * 60 * 24 * 7;
@@ -45,17 +47,22 @@ public class JWTUtil {
 //                .withClaim("exp", Instant.now().getEpochSecond() + REFRESH_TIME)
 //                .sign(ALGORITHM);
 //    }
-public static String makeAuthToknen(UserDetails details) {
-    return JWT.create().withSubject(details.getUsername())
-            .withClaim("exp", Instant.now().getEpochSecond() + AUTH_TIME)
-            .sign(ALGORITHM);
-}
 
-//    public static String makeRefreshToken(UserDetails details) {
-//        return JWT.create().withSubject(member.getMemberId())
-//                .withClaim("exp", Instant.now().getEpochSecond() + REFRESH_TIME)
-//                .sign(ALGORITHM);
-//    }
+
+    public static String makeAuthToknen(UserDetails details) {
+        return JWT.create().withSubject(details.getUsername())
+                .withClaim("exp", Instant.now().getEpochSecond() + AUTH_TIME)
+                .withClaim("memberId", details.getUsername())
+                .sign(ALGORITHM);
+    }
+
+    public static String makeRefreshToken(UserDetails details) {
+        return JWT.create().withSubject(details.getUsername())
+                .withClaim("exp", Instant.now().getEpochSecond() + REFRESH_TIME)
+                .withClaim("memberId", details.getUsername())
+                .sign(ALGORITHM);
+    }
+
 
     // 토큰의 유효성을 검증함
     public static VerifyResult verify(String token) {
