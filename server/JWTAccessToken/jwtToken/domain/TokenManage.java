@@ -1,10 +1,8 @@
-package com.trading.day.member.domain;
+package com.trading.day.jwtToken.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
+import com.trading.day.config.BaseTimeEntity;
+import com.trading.day.member.domain.Member;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -24,26 +22,20 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "TOKEN_MANAGE")
-@RequiredArgsConstructor
-public class TokenManage {
+public class TokenManage extends BaseTimeEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long tokenId;
 
+    private String userName;
     private String refreshToken;
+    private Long memberNo;
+//    @ManyToOne
+//    @JoinColumn(name = "member_no")
+//    private Member memberEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "member_no")
-    private Member memberEntity;
-
-    @Builder
-    public TokenManage(String refreshToken, Member memberEntity) {
-        this.refreshToken = refreshToken;
-        this.memberEntity = memberEntity;
-    }
-
-    // 사용하는 refreshToken이 유효시간이 만료되었을 때 DB에 업데이트
+    // 사용하는 refreshToken이 유효시간이 만료되었을때 DB에 업데이트
     public void refreshUpdate(String refreshToken) {
         this.refreshToken = refreshToken;
     }

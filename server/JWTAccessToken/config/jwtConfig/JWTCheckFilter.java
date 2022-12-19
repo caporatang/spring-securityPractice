@@ -45,30 +45,31 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
 
         String bearer = request.getHeader(HttpHeaders.AUTHORIZATION);
-
         // 헤더에 bearer토큰이 있을수도 없을수도 있고,
         if(bearer == null || !bearer.startsWith("Bearer ")) {
             // 인증이 필요없을수도있기 때문에 흘려보냄
             chain.doFilter(request, response); //
-        }
-
-        String token = bearer.substring("Bearer ".length());
-
-        VerifyResult result = JWTUtil.verify(token);
-
-        if(result.isSuccess()) {
-            // 유효성이 검증된다면, 조회한 유저 디테일의 데이터로 토큰을 직접 만듬
-            UserDetails user = memberService.loadUserByUsername(result.getMemberId());
-
-            UsernamePasswordAuthenticationToken memberToken = new UsernamePasswordAuthenticationToken(
-                    user.getUsername(), null, user.getAuthorities()
-            );
-            SecurityContextHolder.getContext().setAuthentication(memberToken);
-            super.doFilterInternal(request, response, chain);
         } else {
+            String token = bearer.substring("Bearer ".length());
+            VerifyResult result = JWTUtil.verify(token);
+
+            if(result.isSuccess()) {
+                // 유효성이 검증된다면, 조회한 유저 디테일의 데이터로 토큰을 직접 만듬
+                UserDetails user = memberService.loadUserByUsername(result.getMemberId());
+
+                UsernamePasswordAuthenticationToken memberToken = new UsernamePasswordAuthenticationToken(
+                        user.getUsername(), null, user.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(memberToken);
+                super.doFilterInternal(request, response, chain);
+            } else {
 //            throw new AuthenticationException("JWTCheckFilter 401 : token is not valid");
-            throw  new TokenExpiredException("token is Expired");
+                throw  new TokenExpiredException("token is Expired");
+            }
         }
+
+
+
     }
 
 

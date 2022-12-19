@@ -24,6 +24,7 @@ public class TokenDTO {
 
     private String tokenId;
     private String userName;
+    private Long memberNo;
     private String refresh_token; // --> 리프레시토큰
     private String auth_token; // 엑세스 토큰
 

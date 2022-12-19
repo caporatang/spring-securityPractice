@@ -18,6 +18,8 @@ import java.util.Optional;
  */
 public interface TokenManageJpaRepository extends JpaRepository<TokenManage, Long> {
 
-    Optional<TokenManage> findByMemberEntityMemberNo(Long memberNo);
+    //Optional<TokenManage> findByMemberEntityMemberNo(Long memberNo);
+//    TokenManage findByMemberNo(Long memberNo);
+    Optional<TokenManage> findByUserName(String userName);
 
 }

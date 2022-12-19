@@ -7,6 +7,7 @@ import com.trading.day.member.domain.Member;
 import com.trading.day.member.repository.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Table;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -33,26 +34,29 @@ public class TokenService {
 
     private final TokenManageJpaRepository tokenManageJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
+    private final ModelMapper modelMapper;
 
 
-    public void saveRefreshToken (TokenManage tokenManage) {
-
+    //public void saveRefreshToken (TokenManage tokenManage) {
+    public void saveRefreshToken (TokenDTO tokenDTO) {
         try {
+//            Optional<TokenManage> findTokenData =
+//                    Optional.ofNullable(tokenManageJpaRepository.findByUserName(tokenDTO.getUserName()).orElseThrow(
+//                            () -> new IllegalArgumentException("검색 결과가 없습니다")));
 
-            Member memberResult = memberJpaRepository.findByMemberId(tokenManage.getUserName());
-            tokenManage.setMemberEntity(memberResult);
-            TokenManage tokenResult = tokenManageJpaRepository.save(tokenManage);
+            Optional<TokenManage> findTokenData = tokenManageJpaRepository.findByUserName(tokenDTO.getUserName());
 
-            System.out.println("tokenService@@@@ : " + tokenResult);
+            if(ObjectUtils.isEmpty(findTokenData)) {
 
-        } catch (Exception exception) {
-            if (ObjectUtils.isEmpty(tokenManage)) {
-                throw new NullPointerException("TokenServcie : 데이터를 찾을 수 없거나 입력값이 없어요");
-            } else if(ObjectUtils.isEmpty(tokenManage.getUserName())) {
-                throw new NullPointerException("TokenServcie : 유저아이디가 없습니다");
-            }  else if(ObjectUtils.isEmpty(tokenManage.getRefreshToken())) {
-                throw new NullPointerException("TokenServcie : refreshToken이 없습니다");
+                Member memberResult = memberJpaRepository.findByMemberId(tokenDTO.getUserName());
+                Long memberNo = memberResult.getMemberNo();
+
+                tokenDTO.setMemberNo(memberNo);
+                TokenManage tokenManage = modelMapper.map(tokenDTO, TokenManage.class);
+                tokenManageJpaRepository.save(tokenManage);
             }
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("refresh 토큰 저장 실패");
         }
     }
 

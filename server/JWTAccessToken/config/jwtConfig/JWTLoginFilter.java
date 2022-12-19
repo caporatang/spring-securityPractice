@@ -1,12 +1,15 @@
 package com.trading.day.config.jwtConfig;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.trading.day.jwtToken.domain.TokenDTO;
+import com.trading.day.jwtToken.domain.TokenManage;
+import com.trading.day.jwtToken.service.TokenService;
 import com.trading.day.member.domain.Member;
-import com.trading.day.member.domain.MemberDTO;
 import com.trading.day.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,13 +40,16 @@ import java.io.IOException;
 @Transactional
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
-
     private ObjectMapper objectMapper = new ObjectMapper();
     private MemberService memberService;
-    public JWTLoginFilter(AuthenticationManager authenticationManager, MemberService memberService) {
+    private TokenService tokenService;
+    public JWTLoginFilter(AuthenticationManager authenticationManager,
+                          MemberService memberService, TokenService tokenService)
+    {
         super(authenticationManager);
         this.memberService = memberService;
-        setFilterProcessesUrl("/login");
+        this.tokenService = tokenService;
+        setFilterProcessesUrl("/member/v1/login");
     }
 
     @Override
@@ -88,6 +94,12 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         response.getOutputStream().write(objectMapper.writeValueAsBytes(details));
 
+        // --------------------refresh Token 저장 -----------------------------
+//        TokenDTO tokenDTO = TokenDTO.builder()
+//                .userName(details.getUsername())
+//                .refresh_token(JWTUtil.makeRefreshToken(details))
+//                .build();
+//        tokenService.saveRefreshToken(tokenDTO);
 
     }
 }
