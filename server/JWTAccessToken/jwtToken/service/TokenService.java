@@ -37,7 +37,6 @@ public class TokenService {
     private final ModelMapper modelMapper;
 
 
-    //public void saveRefreshToken (TokenManage tokenManage) {
     public void saveRefreshToken (TokenDTO tokenDTO) {
         try {
 //            Optional<TokenManage> findTokenData =
@@ -54,9 +53,21 @@ public class TokenService {
                 tokenDTO.setMemberNo(memberNo);
                 TokenManage tokenManage = modelMapper.map(tokenDTO, TokenManage.class);
                 tokenManageJpaRepository.save(tokenManage);
+
+            } else {
+
+                Long tokenId = findTokenData.get().getTokenId();
+                tokenManageJpaRepository.deleteById(tokenId);
+
+                Member memberResult = memberJpaRepository.findByMemberId(tokenDTO.getUserName());
+                Long memberNo = memberResult.getMemberNo();
+
+                tokenDTO.setMemberNo(memberNo);
+                TokenManage tokenManage = modelMapper.map(tokenDTO, TokenManage.class);
+                tokenManageJpaRepository.save(tokenManage);
             }
         } catch (Exception exception) {
-            throw new IllegalArgumentException("refresh 토큰 저장 실패");
+            throw new IllegalArgumentException("refresh 토큰 service err");
         }
     }
 
