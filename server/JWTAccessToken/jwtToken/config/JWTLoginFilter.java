@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName : com.trading.day.config.jwtConfig
@@ -57,14 +59,29 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         setFilterProcessesUrl("/member/v1/login");
     }
 
-    @Override
+//    @Override
     @SneakyThrows
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         // --> 로그인 폼에 대한 예외처리도 추가..해야함...
         Member member = objectMapper.readValue(request.getInputStream(), Member.class);
 
-        if(member.getRefreshToken() == null) {
+        //refresh토큰 포함 여부를 쿠키에서 가지고옴
+        // 최초 로그인 전에는 refresh토큰을 가지고 있지 않기 때문에, refresh토큰을 가지고 요청 들어오지 않음.
+        String refresh_tokenVal = "";
+        Cookie[] cookies = request.getCookies();
+
+        Map<String, String> targetCookie = new HashMap<>();
+
+        for (Cookie cookie : cookies) {
+            targetCookie.put(cookie.getName(), cookie.getValue());
+        }
+        if(targetCookie.get("refresh_token") != null) {
+            String cookieResult = targetCookie.get("refresh_token");
+            refresh_tokenVal = cookieResult.substring("Bearer ".length());
+        }
+        if(refresh_tokenVal.isBlank()) {
+            // 리프레시 토큰을 가지고 있지 않으면, 토큰 생성
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     member.getMemberId(), member.getPwd(), null
             );
@@ -73,7 +90,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             return getAuthenticationManager().authenticate(token);
         } else {
             //refreshToken이 왔다면
-            VerifyResult verify = JWTUtil.verify(member.getRefreshToken());
+//            VerifyResult verify = JWTUtil.verify(member.getRefreshToken());
+            VerifyResult verify = JWTUtil.verify(refresh_tokenVal);
             if(verify.isSuccess()) {
                 //AuthenticationManager에게 위임하지 않고, 바로 통행증을 만들어서 보내줌
                 UserDetails details = memberService.loadUserByUsername(verify.getMemberId());

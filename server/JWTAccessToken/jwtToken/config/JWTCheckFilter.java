@@ -107,20 +107,6 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
                 } else {
                     throw new AuthenticationException("refreshToken is not valid");
                 }
-
-
-//                if (result.isSuccess()) {
-////                    UserDetails user = memberService.loadUserByUsername(result.getMemberId());
-//                    user = memberService.loadUserByUsername(result.getMemberId());
-//
-//                    UsernamePasswordAuthenticationToken memberToken = new UsernamePasswordAuthenticationToken(
-//                            user.getUsername(), null, user.getAuthorities()
-//                    );
-//                    SecurityContextHolder.getContext().setAuthentication(memberToken);
-//                    super.doFilterInternal(request, response, chain);
-//                } else {
-//                    throw new TokenExpiredException("refresh_token is Expired");
-//                }
             }
         }
     }
