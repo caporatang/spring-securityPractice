@@ -1,6 +1,6 @@
-import {Cookies} from "react-cookie";
 
-const cookies = new Cookies()
+
+
 
 // export const setAuthTokenCookie = (name: string, value: string, option?: any) => {
 //     return cookies.set(name, value, {...option});
@@ -10,13 +10,19 @@ const cookies = new Cookies()
 //     return cookies.get(name);
 // }
 
-export const setCookie = (name: string, value: string, options: any) => {
-    return cookies.set(name, value, {...options});
-}
+// export const authTokenCheck = (localStorageToken: string) => {
+//     let val;
+//     if(localStorageToken == null) {
+//         val = null;
+//     } else {
+//         val = "토큰분기 값";
+// }
+//     return val;
+// }
 
-export const getCookie = (name: string) => {
-    return cookies.get(name);
-}
+// export const getCookie = (name: string) => {
+//     return cookies.get(name);
+// }
 
 // export const setCookie = (name: string, value: string, option?: any) => {
 //     return cookies.set(name, value, {...option});
