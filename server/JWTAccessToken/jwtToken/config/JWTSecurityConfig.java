@@ -45,6 +45,8 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
     private TokenService tokenService;
 
     @Autowired
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
+    @Autowired
     private TokenManageJpaRepository tokenManageJpaRepository;
 
     @Bean
@@ -70,7 +72,8 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/member/v1/**", "/logout").permitAll()
-                .antMatchers("/qna/v1/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers("/item/v1/**", "/apply/v1/**", "/login/oauth2/code/google").permitAll()
+                .antMatchers("/qna/v1/**", "/answer/v1/**").hasAnyAuthority("ROLE_USER")
                 .anyRequest().authenticated()
                 .and()
                 .cors()
@@ -83,6 +86,13 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAt(checkFilter, BasicAuthenticationFilter.class)
                 .logout(logout ->
                         logout.deleteCookies("refresh_token"));
+
+        // ----------------- 소셜 로그인 config -----------------------------------
+        http
+                .oauth2Login(oauth2 ->
+                        oauth2.successHandler(oAuth2SuccessHandler));
+
+
     }
     //cors 설정
     @Bean
